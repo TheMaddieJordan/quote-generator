@@ -3,11 +3,26 @@ const quoteText = document.getElementById('quote');
 const authorText = document.getElementById('author');
 const twitterBtn = document.getElementById('twitter');
 const newQuoteBtn = document.getElementById('new-quote');
+const loader = document.getElementById('loader');
 
 let apiQuotes = [];
 
+// Show Loading
+function loading() {
+    // the hidden attribute will hide the div
+    loader.hidden = false;
+    quoteContainer.hidden = true;
+}
+
+// Hide Loading
+function complete() {
+    quoteContainer.hidden = false;
+    loader.hidden = true;
+}
+
 // Show New Quote
 function newQuote() {
+    loading();
     // use math.floor & math.random to return the largest whole number that is within our API number parameters
 
         // Pick a random quote from API Quotes Array
@@ -26,12 +41,14 @@ function newQuote() {
         quoteText.classList.remove('long-quote');
     }
      quoteText.textContent = quote.text;
+     complete();
 };
 
 // Get quotes from API
     // We will use an asynch fetch request in a try catch statement
     // a try catch allows us to attempt to complete a fetch request. If it doesnt work we can catch the info and do something with it.
 async function getQuotes() {
+    loading();
     const apiUrl = 'https://type.fit/api/quotes';
     try {
         // set up fetch request
@@ -58,6 +75,7 @@ function tweetQuote() {
 newQuoteBtn.addEventListener('click', newQuote);
     // This will tweet the quote
 twitterBtn.addEventListener('click', tweetQuote);
+
 
 // On Load
     // run getQuotes function as soon as page loads
